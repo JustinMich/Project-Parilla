@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | eSumbong</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+    button { padding: 10px 20px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome, <span id="user-name"></span>!</h2>
+    <button id="logout-btn">Logout</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAxSVskTjLNwTIKYJoYJiSffY26dqK0qTE",
+      authDomain: "loginsystem-40c09.firebaseapp.com",
+      projectId: "loginsystem-40c09",
+      storageBucket: "loginsystem-40c09.appspot.com",
+      messagingSenderId: "307095420846",
+      appId: "1:307095420846:web:21682791cdf36fae2c923f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const userName = document.getElementById("user-name");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    onAuthStateChanged(auth, async (user) => {
+      if(user){
+        const docSnap = await getDoc(doc(db, "users", user.uid));
+        if(docSnap.exists()){
+          userName.textContent = docSnap.data().name;
+        } else {
+          userName.textContent = "User";
+        }
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
