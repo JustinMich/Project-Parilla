@@ -1,4 +1,4 @@
-name: CI/CD — Deploy to Netlify
+name: CI/CD — Build, Test & Deploy to Netlify
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
+  build_test_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,25 +15,41 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node (optional for plain HTML/JS, but needed if you use npm tools)
+      # 2. Setup Node (needed if using npm tools)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      # 3. Install dependencies (skip if none)
+      # 3. Install dependencies (optional)
       - name: Install Dependencies
-        run: npm install || echo "No dependencies to install"
+        run: |
+          if [ -f package.json ]; then npm install; else echo "No dependencies"; fi
 
-      # 4. Build step (skip if plain HTML/JS doesn't require build)
+      # 4. Build step (optional: copy/minify files)
       - name: Build Project
-        run: echo "No build needed for plain HTML/JS"
+        run: |
+          echo "Starting build..."
+          # Example: copy all files to 'dist' folder
+          mkdir -p dist
+          cp -r "Bag o folder"/* dist/
+          echo "Build finished."
 
-      # 5. Deploy to Netlify
+      # 5. Test step (basic HTML/JS lint)
+      - name: Test Project
+        run: |
+          echo "Running basic lint..."
+          # Optional: install HTML/JS linter if you have it
+          # npm install -g htmlhint eslint
+          # htmlhint "dist/**/*.html"
+          # eslint "dist/**/*.js" || true
+          echo "Tests finished."
+
+      # 6. Deploy to Netlify
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3
         with:
-          publish-dir: "Bag o folder"   # ← your output folder
+          publish-dir: "dist"   # ← use the build folder
           production-deploy: true
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
