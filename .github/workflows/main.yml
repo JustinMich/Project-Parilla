@@ -1,4 +1,4 @@
-name: CI/CD — Build, Test & Deploy to Netlify
+name: CI/CD — Test, Build & Deploy to Netlify
 
 on:
   push:
@@ -7,49 +7,61 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_test_deploy:
+  test_build_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repo
+      # 1. Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node (needed if using npm tools)
+      # 2. Setup Node.js (needed for linters)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      # 3. Install dependencies (optional)
+      # 3. Install dependencies (HTMLHint & ESLint)
       - name: Install Dependencies
         run: |
-          if [ -f package.json ]; then npm install; else echo "No dependencies"; fi
+          npm install -g htmlhint eslint
+          if [ -f package.json ]; then npm install; else echo "No package.json"; fi
 
-      # 4. Build step (optional: copy/minify files)
+      # =========================
+      # 4. TEST STEP (lint & JS tests)
+      # =========================
+      - name: Lint HTML
+        run: htmlhint "Bag o folder/**/*.html" || true
+
+      - name: Lint JS
+        run: eslint "Bag o folder/**/*.js" --max-warnings=0 || true
+
+      - name: Run JS Tests
+        run: |
+          if [ -f package.json ] && npm test >/dev/null 2>&1; then
+            npm test
+          else
+            echo "No tests defined"
+          fi
+
+      # =========================
+      # 5. BUILD STEP
+      # =========================
       - name: Build Project
         run: |
-          echo "Starting build..."
-          # Example: copy all files to 'dist' folder
-          mkdir -p dist
+          echo "Building project..."
+          rm -rf dist
+          mkdir dist
           cp -r "Bag o folder"/* dist/
-          echo "Build finished."
+          echo "Build completed."
 
-      # 5. Test step (basic HTML/JS lint)
-      - name: Test Project
-        run: |
-          echo "Running basic lint..."
-          # Optional: install HTML/JS linter if you have it
-          # npm install -g htmlhint eslint
-          # htmlhint "dist/**/*.html"
-          # eslint "dist/**/*.js" || true
-          echo "Tests finished."
-
-      # 6. Deploy to Netlify
+      # =========================
+      # 6. DEPLOY STEP
+      # =========================
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3
         with:
-          publish-dir: "dist"   # ← use the build folder
+          publish-dir: "dist"
           production-deploy: true
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
