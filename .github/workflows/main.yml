@@ -1,45 +1,41 @@
-.github/workflows/ci-cd.yml
-
 name: CI/CD Pipeline
 
-# --- WHEN TO RUN ---
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# --- PIPELINE JOBS ---
 jobs:
   build-test:
     name: Build & Test (CI)
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-    - name: Run Tests
-      run: npm test
+      - name: Run Tests
+        run: npm test
 
   deploy:
     name: Deploy (CD)
-    needs: build-test    # Wait for CI to finish
+    needs: build-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-   - name: Deploy to Netlify
-      uses: nwtgck/actions-netlify@v2.0
-      with:
-        publish-dir: ./dist       # CHANGE THIS IF NEEDED
-        production-deploy: true
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: ./dist  # Change to your actual build folder
+          production-deploy: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
