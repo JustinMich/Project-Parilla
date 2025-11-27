@@ -19,12 +19,6 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    # Example for Node.js (You can replace depending on your tech)
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
     - name: Install Dependencies
       run: npm install
 
@@ -41,6 +35,11 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v3
 
-    # ---- THIS IS WHERE YOU DEPLOY ----
-    - name: Deploy to Server (example only)
-      run: echo "Deploying application..."
+   - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v2.0
+      with:
+        publish-dir: ./dist       # CHANGE THIS IF NEEDED
+        production-deploy: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
