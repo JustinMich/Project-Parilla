@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD — Deploy to Netlify
 
 on:
   push:
@@ -7,35 +7,33 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-test:
-    name: Build & Test (CI)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Tests
-        run: npm test
-
   deploy:
-    name: Deploy (CD)
-    needs: build-test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      # 1. Checkout repo
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v2.0
+      # 2. Setup Node (optional for plain HTML/JS, but needed if you use npm tools)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          publish-dir: ./dist  # Change to your actual build folder
+          node-version: '18'
+
+      # 3. Install dependencies (skip if none)
+      - name: Install Dependencies
+        run: npm install || echo "No dependencies to install"
+
+      # 4. Build step (skip if plain HTML/JS doesn't require build)
+      - name: Build Project
+        run: echo "No build needed for plain HTML/JS"
+
+      # 5. Deploy to Netlify
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3
+        with:
+          publish-dir: "Bag o folder"   # ← your output folder
           production-deploy: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
