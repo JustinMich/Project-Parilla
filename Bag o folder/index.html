@@ -4,48 +4,218 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login | RRCJ</title>
+
+<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:rgb(10, 1, 45);height:100vh;display:flex;justify-content:center;align-items:center}
-.container{width:360px;background:#fff;padding:35px 30px;border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,0.15);animation:fadeIn 0.6s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-h2{text-align:center;margin-bottom:20px;font-weight:600;color:#333}
-input{width:100%;padding:12px;margin-top:13px;border-radius:8px;border:1px solid #ccc;font-size:14px}
-input:focus{border-color:#0062ff;outline:none;box-shadow:0 0 3px rgba(0,98,255,0.4)}
-button{width:100%;padding:12px;margin-top:20px;border:none;background:#0062ff;color:white;border-radius:8px;font-size:15px;cursor:pointer;font-weight:500;transition:.25s}
-button:hover{background:#004ccd}
-.password-wrapper{position:relative}
-.toggle-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;user-select:none;font-size:17px}
-p{text-align:center;margin-top:15px;font-size:14px}
-a{color:#0062ff;font-weight:500;text-decoration:none}
-a:hover{text-decoration:underline}
-.forgot-link{margin-top:8px;text-align:right;font-size:13px}
-#forgot-box{display:none;margin-top:15px}
+
+/* Background */
+body{
+    background: url("rrcj.jpg") no-repeat center center/cover;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    backdrop-filter: blur(4px);
+    background:rgba(0,0,0,0.45);
+}
+
+/* Glass Card */
+.container{
+    position:relative;
+    width:360px;
+    padding:35px 30px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+    backdrop-filter:blur(12px);
+    animation:fadeIn 0.7s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* Logo */
+.logo{
+    width:115px;
+    height:115px;
+    margin:auto;
+    display:block;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid rgba(255,255,255,0.7);
+    margin-bottom:15px;
+}
+
+/* Text */
+h2{
+    text-align:center;
+    margin-bottom:18px;
+    font-weight:600;
+    color:white;
+    text-shadow:0 0 6px rgba(0,0,0,0.7);
+}
+
+/* Input Group */
+.input-group{
+    position:relative;
+    margin-top:13px;
+}
+
+.input-group i{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:16px;
+    color:white;
+    opacity:0.8;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    padding-left:40px; /* space for left icon */
+    padding-right:45px; /* space for eye on right */
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.4);
+    background:rgba(255,255,255,0.2);
+    color:white;
+    font-size:14px;
+}
+
+input::placeholder{
+    color:#f0f0f0;
+}
+
+input:focus{
+    border-color:#00a2ff;
+    outline:none;
+    box-shadow:0 0 4px rgba(0,162,255,0.7);
+}
+
+/* Eye icon inside input */
+.eye-icon{
+    position:absolute;
+    right:40px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:17px;
+    color:white;
+    opacity:0.9;
+    z-index:2;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    border:none;
+    background:#0062ff;
+    color:white;
+    border-radius:8px;
+    font-size:15px;
+    cursor:pointer;
+    font-weight:500;
+    transition:0.25s;
+}
+
+button:hover{
+    background:#004ccd;
+}
+
+/* Links */
+a{
+    color:#c5dcff;
+    font-weight:500;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
+.forgot-link{
+    margin-top:8px;
+    text-align:right;
+    font-size:13px;
+}
+
+p{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    color:white;
+}
+
+/* Forgot form */
+#forgot-box{
+    display:none;
+}
 </style>
 </head>
+
 <body>
 <div class="container">
+
+    <img src="rrcj.jpg" class="logo">
+
+    <!-- LOGIN FORM -->
     <form id="login-form">
         <h2>RRCJ Login</h2>
-        <input type="email" id="login-email" placeholder="Email Address" required>
-        <div class="password-wrapper">
-            <input type="password" id="login-password" placeholder="Password" required>
-            <span id="toggle-login" class="toggle-eye"></span>
+
+        <div class="input-group">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="login-email" placeholder="Email Address" required>
         </div>
+
+        <div class="input-group">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <span class="eye-icon" id="toggle-login"><i class="fa-solid fa-eye"></i></span>
+        </div>
+
         <div class="forgot-link">
             <a href="#" id="open-forgot">Forgot Password?</a>
         </div>
+
         <button type="submit">Login</button>
+
         <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
     </form>
 
+    <!-- FORGOT PASSWORD FORM -->
     <div id="forgot-box">
         <h2>Reset Password</h2>
-        <input type="email" id="forgot-email" placeholder="Enter your email" required>
+
+        <div class="input-group">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="forgot-email" placeholder="Enter your email" required>
+        </div>
+
         <button id="reset-btn">Send Reset Link</button>
+
         <p><a href="#" id="back-to-login">Back to Login</a></p>
     </div>
+
 </div>
 
 <script type="module">
@@ -64,28 +234,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-let loginAttempts = 0; // Track failed attempts
+let loginAttempts = 0; 
 const maxAttempts = 3;
 
-// Show / hide password
+/* Show/Hide password inside input (eye on right) */
 document.getElementById("toggle-login").addEventListener("click", () => {
     const p = document.getElementById("login-password");
     p.type = p.type === "password" ? "text" : "password";
 });
 
-// Show forgot password box
+/* Forgot Password toggle */
 document.getElementById("open-forgot").addEventListener("click", () => {
     document.getElementById("login-form").style.display = "none";
     document.getElementById("forgot-box").style.display = "block";
 });
 
-// Back to login
 document.getElementById("back-to-login").addEventListener("click", () => {
     document.getElementById("forgot-box").style.display = "none";
     document.getElementById("login-form").style.display = "block";
 });
 
-// LOGIN FUNCTION
+/* Login */
 document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("login-email").value.trim();
@@ -93,7 +262,6 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
     if(loginAttempts >= maxAttempts){
         alert("Three attempts done! Check your email for alert warning.");
-        console.log(`Alert warning sent to ${email}`);
         return;
     }
 
@@ -104,34 +272,30 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         window.location.href = "dashboard.html";
     } catch(err) {
         loginAttempts++;
-        document.getElementById("login-password").value = ""; // Clear password field
+        document.getElementById("login-password").value = "";
 
-        // Determine if it's a wrong password
-        if(err.code === 'auth/wrong-password' || err.message.includes("password")){
+        if(err.code === 'auth/wrong-password'){
             alert(`Incorrect password. Attempt ${loginAttempts} of ${maxAttempts}`);
         } else if(err.code === 'auth/user-not-found'){
-            alert("Email not found. Please sign up first.");
+            alert("Email not found.");
         } else {
             alert(err.message);
         }
-
-        //if(loginAttempts >= maxAttempts){
-            //alert("Three attempts done! Check your email for alert warning.");
-            //console.log(`Alert warning sent to ${email}`);
-        //}
     }
 });
 
-// FORGOT PASSWORD SEND LINK
+/* Reset Password */
 document.getElementById("reset-btn").addEventListener("click", async () => {
     const email = document.getElementById("forgot-email").value.trim();
+
     if(!email){
         alert("Please enter your email.");
         return;
     }
+
     try {
         await sendPasswordResetEmail(auth, email);
-        alert("Reset link sent! Check your email inbox.");
+        alert("Reset link sent!");
         document.getElementById("forgot-email").value = "";
         document.getElementById("forgot-box").style.display = "none";
         document.getElementById("login-form").style.display = "block";
@@ -140,8 +304,6 @@ document.getElementById("reset-btn").addEventListener("click", async () => {
     }
 });
 </script>
+
 </body>
 </html>
-
-
-
