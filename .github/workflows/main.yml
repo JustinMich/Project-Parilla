@@ -6,30 +6,27 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# ================================
+# 1. TEST JOB
+# ================================
 jobs:
-  test_build_deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js (needed for linters)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      # 3. Install dependencies (HTMLHint & ESLint)
       - name: Install Dependencies
         run: |
           npm install -g htmlhint eslint
           if [ -f package.json ]; then npm install; else echo "No package.json"; fi
 
-      # =========================
-      # 4. TEST STEP (lint & JS tests)
-      # =========================
       - name: Lint HTML
         run: htmlhint "Bag o folder/**/*.html" || true
 
@@ -44,9 +41,17 @@ jobs:
             echo "No tests defined"
           fi
 
-      # =========================
-      # 5. BUILD STEP
-      # =========================
+# ================================
+# 2. BUILD JOB (runs after test)
+# ================================
+  build:
+    runs-on: ubuntu-latest
+    needs: test   # ⬅ ensures this runs after test
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Build Project
         run: |
           echo "Building project..."
@@ -55,9 +60,17 @@ jobs:
           cp -r "Bag o folder"/* dist/
           echo "Build completed."
 
-      # =========================
-      # 6. DEPLOY STEP
-      # =========================
+# ================================
+# 3. DEPLOY JOB (runs after build)
+# ================================
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build   # ⬅ ensures this runs after build
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3
         with:
