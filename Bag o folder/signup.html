@@ -3,84 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign Up | eSumbong</title>
+<title>Sign Up | RRCJ</title>
 
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+<!-- Font Awesome for eye icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
-  /* your existing CSS here */
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-  body { background: grey; height: 100vh; display: flex; justify-content: center; align-items: center; }
-  .container { width: 360px; background: #fff; padding: 35px 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); animation: fadeIn 0.6s ease; }
-  @keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
-  h2 { text-align: center; margin-bottom: 20px; font-weight: 600; color: #333; }
-  input { width: 100%; padding: 12px; margin-top: 13px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; transition: 0.2s; }
-  input:focus { border-color: #0062ff; outline: none; box-shadow: 0 0 3px rgba(0,98,255,0.4); }
-  .password-wrapper { position: relative; }
-  .toggle-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 17px; }
-  button { width: 100%; padding: 12px; margin-top: 20px; border: none; background: #0062ff; color: white; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: 500; transition: 0.25s; }
-  button:hover { background: #004ccd; }
-  p { text-align: center; margin-top: 15px; font-size: 14px; }
-  a { color: #0062ff; text-decoration: none; font-weight: 500; }
-  a:hover { text-decoration: underline; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+/* Background same as login */
+body{
+    background: url("rrcj.jpg") no-repeat center center/cover;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    backdrop-filter: blur(4px);
+    background:rgba(0,0,0,0.45);
+}
+
+/* Glass Container */
+.container{
+    position:relative;
+    width:360px;
+    padding:35px 30px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+    backdrop-filter:blur(12px);
+    animation:fadeIn 0.7s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* Text */
+h2{
+    text-align:center;
+    margin-bottom:18px;
+    font-weight:600;
+    color:white;
+    text-shadow:0 0 6px rgba(0,0,0,0.7);
+}
+
+/* Input fields */
+.input-group{
+    position:relative;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    padding-left:15px;
+    padding-right:45px;
+    margin-top:13px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.4);
+    background:rgba(255,255,255,0.2);
+    color:white;
+    font-size:14px;
+}
+
+input::placeholder{
+    color:#f0f0f0;
+}
+
+input:focus{
+    border-color:#00a2ff;
+    outline:none;
+    box-shadow:0 0 4px rgba(0,162,255,0.7);
+}
+
+/* White eye icon INSIDE input */
+.eye-icon{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:17px;
+    color:white;
+    opacity:0.9;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    border:none;
+    background:#0062ff;
+    color:white;
+    border-radius:8px;
+    font-size:15px;
+    cursor:pointer;
+    font-weight:500;
+    transition:0.25s;
+}
+
+button:hover{
+    background:#004ccd;
+}
+
+p{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    color:white;
+}
+
+a{
+    color:#c5dcff;
+    font-weight:500;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
 </style>
 
 </head>
 <body>
 
 <div class="container">
+
+  <h2>Create Account</h2>
+
   <form id="signup-form">
-    <h2>Create Account</h2>
 
-    <input type="text" id="name" placeholder="Full Name" required>
-    <input type="email" id="email" placeholder="Email Address" required>
-
-    <div class="password-wrapper">
-      <input type="password" id="password" placeholder="Password" required>
-      <span id="toggle-password" class="toggle-eye">👁️</span>
+    <div class="input-group">
+        <input type="text" id="name" placeholder="Full Name" required>
     </div>
 
-    <div class="password-wrapper">
-      <input type="password" id="confirm-password" placeholder="Confirm Password" required>
-      <span id="toggle-confirm" class="toggle-eye">👁️</span>
+    <div class="input-group">
+        <input type="email" id="email" placeholder="Email Address" required>
+    </div>
+
+    <!-- Password -->
+    <div class="input-group">
+        <input type="password" id="password" placeholder="Password" required>
+        <i class="fa-solid fa-eye eye-icon" id="toggle-password"></i>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="input-group">
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+        <i class="fa-solid fa-eye eye-icon" id="toggle-confirm"></i>
     </div>
 
     <button type="submit">Sign Up</button>
-    <p>Already have an Account? <a href="index.html">Login here</a></p>
+
+    <p>Already have an account? <a href="index.html">Login here</a></p>
+
   </form>
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyAxSVskTjLNwTIKYJoYJiSffY26dqK0qTE",
     authDomain: "loginsystem-40c09.firebaseapp.com",
     projectId: "loginsystem-40c09",
     storageBucket: "loginsystem-40c09.appspot.com",
     messagingSenderId: "307095420846",
     appId: "1:307095420846:web:21682791cdf36fae2c923f"
-  };
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  // Toggle visibility
-  document.getElementById("toggle-password").onclick = () => {
-    const p = document.getElementById("password");
-    p.type = p.type === "password" ? "text" : "password";
-  };
-  document.getElementById("toggle-confirm").onclick = () => {
-    const cp = document.getElementById("confirm-password");
-    cp.type = cp.type === "password" ? "text" : "password";
-  };
+/* Eye toggle */
+function toggleEye(inputId, iconId){
+    const field = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    icon.addEventListener("click", ()=>{
+        field.type = field.type === "password" ? "text" : "password";
+    });
+}
 
-  // Sign-up process
-  document.getElementById("signup-form").addEventListener("submit", async (e) => {
+toggleEye("password","toggle-password");
+toggleEye("confirm-password","toggle-confirm");
+
+/* Sign Up */
+document.getElementById("signup-form").addEventListener("submit", async (e)=>{
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
@@ -89,48 +213,31 @@
     const confirmPassword = document.getElementById("confirm-password").value;
 
     if(password !== confirmPassword){
-      alert("Passwords do not match!");
-      return;
-    }
-    if(password.length < 6){
-      alert("Password must be at least 6 characters!");
-      return;
-    }
-    const complexity = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    if(!complexity.test(password)){
-      alert("Password must contain uppercase, lowercase, and a number.");
-      return;
+        alert("Passwords do not match!");
+        return;
     }
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+    try{
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-      await setDoc(doc(db, "users", user.uid), {
-        name,
-        email,
-        createdAt: new Date(),
-        verified: false
-      });
+        await setDoc(doc(db, "users", user.uid), {
+            name,
+            email,
+            createdAt: new Date(),
+            verified: false
+        });
 
-      // Send verification email
-      await sendEmailVerification(user);
-      alert("Account created! Check your Email for Verification.\nWait for verification.");
+        await sendEmailVerification(user);
+        alert("Account created! Check your email for verification.");
 
-      // Redirect to login page
-      window.location.href = "index.html";
-
-    } catch(err) {
-      if(err.code === "auth/email-already-in-use"){
-        alert("Email already registered. Try logging in.");
-      } else {
+        window.location.href = "index.html";
+    }
+    catch(err){
         alert(err.message);
-      }
     }
-  });
+});
 </script>
 
 </body>
 </html>
-
-
